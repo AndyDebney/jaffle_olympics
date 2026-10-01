@@ -1,0 +1,120 @@
+version: 2
+
+models:
+  - name: mart_title_performance
+    description: >
+      Title x month scorecard for leadership and product: engagement, revenue and reception
+      per title per month, with month-over-month deltas and a has_sufficient_volume flag so
+      thin cells are not read as signal. Traces to leadership (invest / sunset decisions).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [title_id, activity_month]
+    columns:
+      - name: title_id
+        description: Title the row summarizes.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: { to: ref('dim_titles'), field: title_id }
+      - name: title_name
+        description: Player-facing title name.
+      - name: monetization_model
+        description: premium, f2p, or premium_plus_dlc.
+      - name: lifecycle_stage
+        description: Current lifecycle stage of the title (from dim_titles), for quick context.
+      - name: activity_month
+        description: Month the metrics cover (first of month).
+        data_tests: [not_null]
+      - name: monthly_active_players
+        description: Distinct players with a session for this title in the month.
+      - name: sessions
+        description: All sessions for the title in the month.
+      - name: valid_sessions
+        description: Sessions excluding crashes and idle outliers.
+      - name: sessions_per_active_player
+        description: Valid sessions divided by monthly active players — engagement intensity.
+      - name: avg_session_minutes
+        description: Average valid session length in minutes.
+      - name: net_revenue_usd
+        description: Net revenue attributed to the title in the month (all streams, less reversals).
+      - name: studio_net_revenue_usd
+        description: Net revenue after storefront fees — what the studio keeps.
+      - name: paying_players
+        description: Distinct players with a positive-net transaction on the title in the month.
+      - name: arpu_usd
+        description: Average revenue per monthly active player.
+      - name: arppu_usd
+        description: Average revenue per paying player.
+      - name: payer_conversion_rate
+        description: Paying players over monthly active players (0-1).
+      - name: avg_review_rating
+        description: Average rating of reviews left in the month (nullable when none).
+      - name: review_count
+        description: Reviews left for the title in the month.
+      - name: map_mom_delta
+        description: Change in monthly active players versus the prior month for this title.
+      - name: net_revenue_mom_delta
+        description: Change in net revenue versus the prior month for this title.
+      - name: has_sufficient_volume
+        description: >
+          True when monthly active players meets the minimum threshold
+          ({{ var('min_active_players_threshold') }}); false marks statistically thin cells.
+
+  - name: mart_studio_kpis
+    description: >
+      Studio x month executive summary: actives, revenue by stream, revenue concentration,
+      acquisition and blended CAC, and portfolio-health counts. The board-deck grain for
+      leadership.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [activity_month]
+    columns:
+      - name: activity_month
+        description: Month summarized (first of month).
+        data_tests: [not_null, unique]
+      - name: monthly_active_players
+        description: Distinct players active across the whole portfolio in the month.
+      - name: sessions
+        description: All sessions across the portfolio in the month.
+      - name: new_registrations
+        description: New player accounts registered in the month.
+      - name: net_revenue_usd
+        description: Total net revenue across all titles and streams (less reversals).
+      - name: studio_net_revenue_usd
+        description: Total net revenue after storefront fees.
+      - name: net_revenue_premium_usd
+        description: Net revenue from premium unit sales.
+      - name: net_revenue_iap_usd
+        description: Net revenue from in-app purchases.
+      - name: net_revenue_season_pass_usd
+        description: Net revenue from season passes.
+      - name: net_revenue_dlc_usd
+        description: Net revenue from DLC / expansions.
+      - name: refunds_chargebacks_usd
+        description: Net effect of refunds and chargebacks (negative).
+      - name: paying_players
+        description: Distinct players with a positive-net transaction in the month.
+      - name: payer_conversion_rate
+        description: Paying players over monthly active players (0-1).
+      - name: arpu_usd
+        description: Net revenue per monthly active player.
+      - name: top_title_revenue_share
+        description: Share of the month's net revenue from the single top-grossing title (concentration).
+      - name: top_player_revenue_share
+        description: Share of the month's net revenue from the single top-spending player (whale concentration).
+      - name: marketing_spend_usd
+        description: Total marketing spend in the month.
+      - name: marketing_installs
+        description: Attributed installs from marketing in the month.
+      - name: blended_cac_usd
+        description: Blended cost of acquisition — marketing spend over new registrations.
+      - name: titles_total
+        description: Count of titles in the portfolio (evaluated at the analysis date).
+      - name: titles_in_launch
+        description: Titles currently in their launch window.
+      - name: titles_declining
+        description: Titles currently in the declining stage.
+      - name: titles_sunset_candidate
+        description: Titles flagged as sunset candidates.

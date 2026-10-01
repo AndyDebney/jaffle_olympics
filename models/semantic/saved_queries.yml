@@ -1,0 +1,22 @@
+saved_queries:
+  - name: monthly_studio_performance
+    description: >
+      Studio-level monthly net revenue, active players and payer conversion — the semantic-layer
+      companion to mart_studio_kpis, callable from BI or the CLI.
+    query_params:
+      metrics:
+        - net_revenue
+        - monthly_active_players
+        - payer_conversion_rate
+      group_by:
+        - "TimeDimension('metric_time', 'month')"
+
+  - name: revenue_by_title_month
+    description: Monthly net revenue and ARPPU by title, for portfolio revenue reviews.
+    query_params:
+      metrics:
+        - net_revenue
+        - arppu
+      group_by:
+        - "Entity('title')"
+        - "TimeDimension('metric_time', 'month')"

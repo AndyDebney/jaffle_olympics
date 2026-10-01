@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: mart_monetization
+    description: >
+      Monetization at title x purchase-category x month for finance: revenue by what was sold,
+      with attach rate, first-purchase conversion and refund rate. premium unit sales appear as
+      the premium_base category; SKU-backed sales use their SKU category.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [title_id, purchase_category, activity_month]
+    columns:
+      - name: title_id
+        description: Title the sales belong to.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: { to: ref('dim_titles'), field: title_id }
+      - name: title_name
+        description: Player-facing title name.
+      - name: purchase_category
+        description: What was sold — premium_base, currency_pack, cosmetic, battle_pass, or expansion.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['premium_base', 'currency_pack', 'cosmetic', 'battle_pass', 'expansion', 'other']
+      - name: activity_month
+        description: Month of the transactions (first of month).
+        data_tests: [not_null]
+      - name: gross_revenue_usd
+        description: Gross revenue from sales (excludes refunds/chargebacks).
+      - name: net_revenue_usd
+        description: Net revenue including the effect of refunds/chargebacks.
+      - name: studio_net_revenue_usd
+        description: Net revenue after storefront fees.
+      - name: refund_gross_usd
+        description: Gross value of refunds and chargebacks in the category-month.
+      - name: purchase_count
+        description: Number of sale transactions (excludes reversals).
+      - name: refund_count
+        description: Number of refund/chargeback transactions.
+      - name: paying_players
+        description: Distinct players with a positive-net purchase in the category-month.
+      - name: first_purchases
+        description: Transactions flagged as the player's first acquisition.
+      - name: monthly_active_players
+        description: Title's monthly active players — the denominator for attach/conversion.
+      - name: attach_rate
+        description: Paying players in the category over the title's monthly active players (0-1).
+      - name: first_purchase_conversion_rate
+        description: First-time buyers in the category over monthly active players (0-1).
+      - name: refund_rate
+        description: Refunded gross over gross sold in the category-month (0-1).
