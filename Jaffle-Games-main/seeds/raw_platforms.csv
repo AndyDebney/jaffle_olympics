@@ -1,0 +1,7 @@
+platform,platform_family,storefront_fee_rate
+steam,pc,0.3
+playstation,console,0.3
+xbox,console,0.3
+switch,console,0.3
+ios,mobile,0.15
+android,mobile,0.15

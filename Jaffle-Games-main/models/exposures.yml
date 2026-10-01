@@ -1,0 +1,79 @@
+version: 2
+
+exposures:
+  - name: leadership_portfolio_review
+    label: "Leadership: portfolio review"
+    type: dashboard
+    maturity: high
+    url: https://bi.example.com/dashboards/leadership-portfolio-review
+    description: >
+      Monthly portfolio review for studio leadership — active players and revenue by title,
+      lifecycle stage, and the invest / sunset shortlist. Answers "which titles get continued
+      investment, a sequel, or a sunset."
+    depends_on:
+      - ref('mart_studio_kpis')
+      - ref('mart_title_performance')
+      - ref('dim_titles')
+    owner:
+      name: Analytics Engineering
+      email: sara.gawlinski@dbtlabs.com
+
+  - name: finance_revenue_book
+    label: "Finance: revenue book"
+    type: dashboard
+    maturity: high
+    url: https://bi.example.com/dashboards/finance-revenue-book
+    description: >
+      Revenue by title, platform and stream, with refund and chargeback exposure and studio net
+      after storefront fees. The finance team's source for monthly close and revenue concentration.
+    depends_on:
+      - ref('mart_monetization')
+      - ref('mart_studio_kpis')
+      - ref('fct_transactions')
+    owner:
+      name: Analytics Engineering
+      email: sara.gawlinski@dbtlabs.com
+
+  - name: live_ops_release_scorecard
+    label: "Live ops: release scorecard"
+    type: dashboard
+    maturity: medium
+    url: https://bi.example.com/dashboards/live-ops-release-scorecard
+    description: >
+      Per-release before/after scorecard — engagement, crash rate and revenue per active player —
+      so live ops and product can tell whether a patch or event helped or hurt.
+    depends_on:
+      - ref('mart_live_ops_health')
+      - ref('fct_releases')
+    owner:
+      name: Analytics Engineering
+      email: sara.gawlinski@dbtlabs.com
+
+  - name: player_experience_retention
+    label: "Player experience: retention & churn"
+    type: dashboard
+    maturity: medium
+    url: https://bi.example.com/dashboards/player-experience-retention
+    description: >
+      Cohort retention triangle by acquisition channel with cohort sizes exposed, plus churn and
+      payer segments. Shows the player-experience team which cohorts drop off and where.
+    depends_on:
+      - ref('mart_player_retention')
+      - ref('dim_players')
+    owner:
+      name: Analytics Engineering
+      email: sara.gawlinski@dbtlabs.com
+
+  - name: player_experience_leaderboards
+    label: "Player experience: leaderboards & anti-cheat"
+    type: dashboard
+    maturity: low
+    url: https://bi.example.com/dashboards/leaderboards-anti-cheat
+    description: >
+      Cross-title leaderboard standings with legitimate rankings and a separate count of
+      cheat-flagged submissions for anti-cheat monitoring.
+    depends_on:
+      - ref('mart_player_leaderboard')
+    owner:
+      name: Analytics Engineering
+      email: sara.gawlinski@dbtlabs.com

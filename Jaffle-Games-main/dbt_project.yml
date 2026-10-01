@@ -1,0 +1,84 @@
+name: 'jaffle_games'
+version: '1.0.0'
+config-version: 2
+
+# This project is executed against the dbt platform (Snowflake target database ANALYTICS).
+# Connection, role, warehouse and the developer's dev schema are configured in the platform
+# environment, not in this repo — so no credentials or schema names are hardcoded here.
+profile: 'jaffle_games'
+
+flags:
+  manage_state: false
+  use_catalogs_v2: true
+  no_write_json: true
+  warn_error_options:
+    silence:
+      - NotYetSupportedOption
+      - InvalidConfig
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+# Project-level constants. Kept here so no date, threshold or business rule is buried as a
+# magic number inside a model. Documented in README.md and docs/demo-notes.md.
+vars:
+  # History window (see setup/generate_seeds.py). The date spine runs 90 days past the end.
+  window_start_date: '2025-08-01'
+  window_end_date: '2026-08-05'
+  date_spine_end_date: '2026-11-03'   # window_end_date + 90 days
+
+  # Churn definition: a player is churned if their most recent session is older than this
+  # many days as of the analysis date. Confirm with player-experience before demoing.
+  churn_days_threshold: 30
+
+  # Live-service payer segmentation, on lifetime IAP + season_pass spend (USD).
+  # Premium unit sales and DLC do NOT count toward these thresholds.
+  payer_whale_min_usd: 300
+  payer_dolphin_min_usd: 50
+  payer_minnow_min_usd: 0.01
+
+  # Title-month cells with fewer than this many monthly active players are flagged
+  # has_sufficient_volume = false rather than being shown as if they were reliable.
+  min_active_players_threshold: 5
+
+  # Analysis "as of" date — the close of the history window. Used for recency/churn math
+  # so results are stable and reproducible regardless of when the project is run.
+  analysis_as_of_date: '2026-08-05'
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# Persist model and column descriptions into Snowflake as COMMENTs (production hygiene:
+# the warehouse itself becomes self-documenting for tools that read metadata).
+models:
+  +static_analysis: strict
+  jaffle_games:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: ephemeral
+    marts:
+      +materialized: table
+      core:
+        +materialized: table
+      leadership:
+        +materialized: table
+      finance:
+        +materialized: table
+      live_ops:
+        +materialized: table
+      player_experience:
+        +materialized: table
+
+# Seeds get explicit column types in seeds/_seeds.yml — never rely on type inference.
+seeds:
+  +static_analysis: strict
+
+snapshots:
+  +static_analysis: strict

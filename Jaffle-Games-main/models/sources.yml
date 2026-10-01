@@ -1,0 +1,8 @@
+sources:
+  - name: raw
+    database: ADEBNEYDEMODB
+    schema: JAFFLE_OLYMPICS
+    description: "Raw data from the platform's source systems."
+    tables:
+      - name: raw_platforms
+        description: "Raw data from the platform's source systems."

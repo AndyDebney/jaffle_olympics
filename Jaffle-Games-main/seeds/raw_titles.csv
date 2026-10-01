@@ -1,0 +1,9 @@
+title_id,title_name,genre,sub_genre,monetization_model,launch_date,list_price_usd,internal_team,engine,esrb_rating,is_live_service,sunset_date,_loaded_at
+T001,Jaffle Quest,RPG,Action RPG,premium,2019-03-12,39.99,Team Marmalade,Unreal,T,False,,2026-08-05 06:00:00
+T002,Neon Cabinet,Arcade,Twin-stick,premium_plus_dlc,2020-06-25,19.99,Team Griddle,Unity,E,False,,2026-08-05 06:00:00
+T003,Preserve,Puzzle,Farming sim,premium,2020-11-05,24.99,Team Marmalade,Godot,E,False,,2026-08-05 06:00:00
+T004,Toastlands,Platformer,Precision,premium_plus_dlc,2021-09-30,29.99,Team Griddle,Unity,E10,False,,2026-08-05 06:00:00
+T005,Griddle Royale,Shooter,Battle Royale,f2p,2022-04-18,0.0,Team Skillet,Unreal,T,True,,2026-08-05 06:00:00
+T006,Crumb Rally,Racing,Arcade racer,premium,2023-08-22,34.99,Team Skillet,Unreal,E,False,,2026-08-05 06:00:00
+T007,Marmalade Siege,Strategy,Tower defense,f2p,2024-02-14,0.0,Team Preserve,Unity,E10,True,,2026-08-05 06:00:00
+T008,Batter Up!,Sports,Arcade sports,f2p,2026-05-15,0.0,Team Preserve,Unity,E,True,,2026-08-05 06:00:00
