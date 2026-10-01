@@ -1,7 +1,0 @@
-metrics:
-  - name: payer_conversion_rate
-    label: Payer conversion rate
-    description: Share of active players who are paying players.
-    type: ratio
-    numerator: paying_players
-    denominator: monthly_active_players
