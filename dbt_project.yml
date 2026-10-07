@@ -68,6 +68,11 @@ models:
       player_experience:
         +materialized: table
 
+
+unit_tests:
+  jaffle_games:
+    +compute: remote
+
 # Seeds get explicit column types in seeds/_seeds.yml — never rely on type inference.
 seeds:
   +static_analysis: strict
