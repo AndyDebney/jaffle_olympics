@@ -30,8 +30,6 @@ models:
 
 unit_tests:
   - name: test_int_transactions_signed_amounts_and_streams
-    config:
-      compute: local
     description: >
       Refunds/chargebacks flip net_amount_usd and studio_net_revenue_usd negative; every
       transaction_type lands in the right revenue_stream_group; is_live_service_revenue

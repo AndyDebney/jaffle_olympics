@@ -818,8 +818,6 @@ models:
 
 unit_tests:
   - name: test_fct_high_scores_excludes_flagged_cheaters_from_rank
-    config:
-      compute: local
     description: >
       Cheat-flagged submissions are retained in the output but excluded from
       leaderboard_rank/score_percentile — ranks and percentiles are computed only among

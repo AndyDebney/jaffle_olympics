@@ -363,8 +363,6 @@ models:
 
 unit_tests:
   - name: test_stg_players_cleans_dirty_inputs
-    config:
-      compute: local
     description: >
       country_code is trimmed/uppercased with empty strings turned to null; acquisition_channel
       collapses "Paid Social" and "paid_social" into the same normalized value; a blank
