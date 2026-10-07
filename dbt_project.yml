@@ -7,14 +7,6 @@ config-version: 2
 # environment, not in this repo — so no credentials or schema names are hardcoded here.
 profile: 'jaffle_games'
 
-flags:
-  manage_state: false
-  use_catalogs_v2: true
-  no_write_json: true
-  warn_error_options:
-    silence:
-      - NotYetSupportedOption
-      - InvalidConfig
 
 model-paths: ["models"]
 analysis-paths: ["analyses"]
